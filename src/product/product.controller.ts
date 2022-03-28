@@ -18,7 +18,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Cache } from 'cache-manager';
 import { Request } from 'express';
 import { Between, Like } from 'typeorm';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../user/auth.guard';
 import { ProductCreateDto } from './dtos/product-create.dto';
 import { Product } from './product';
 import { ProductService } from './product.service';
@@ -36,8 +36,7 @@ export class ProductController {
     async all(@Query() query: any) {
         console.log(query);
         return this.productService.find({
-            location: Like(`%${query.location || ''}%`),
-            model: Like(`%${query.model || ''}%`),
+            title: Like(`%${query.location || ''}%`),
             color: Like(`%${query.color || ''}%`),
             price: Between(query.min_rate || 0, query.max_rate || 100000000),
         });
@@ -65,7 +64,6 @@ export class ProductController {
     async update(@Param('id') id: number, @Body() body: ProductCreateDto) {
         await this.productService.update(id, body);
         this.eventEmitter.emit('product_updated');
-
         return this.productService.findOne({ id });
     }
 
@@ -85,54 +83,5 @@ export class ProductController {
     @Get('manager/products/frontend')
     async frontend() {
         return this.productService.find();
-    }
-
-    // Second way to save cache
-    @Get('manager/products/backend')
-    async backend(@Req() request: Request) {
-        let products = await this.cacheManager.get<Product[]>(
-            'products_backend',
-        );
-
-        if (!products) {
-            products = await this.productService.find();
-            await this.cacheManager.set('products_backend', products, {
-                ttl: 30 * 60,
-            });
-        }
-
-        if (request.query.s) {
-            // s = search
-            const s = request.query.s.toString().toLowerCase();
-            products = products.filter(
-                (p) => p.title.toLocaleLowerCase().indexOf(s) >= 0,
-            );
-        }
-
-        // Sorting by price
-        if (request.query.sort === 'asc' || request.query.sort === 'desc') {
-            products.sort((a, b) => {
-                // 1,0,-1
-                const diff = a.price - b.price;
-                if (diff === 0) return 0;
-
-                const sign = Math.abs(diff) / diff; // -1 or 1
-
-                return request.query.sort === 'asc' ? sign : -sign;
-            });
-        }
-
-        const page: number = parseInt(request.query.page as any) || 1;
-        const perPage = 9;
-
-        const total = products.length;
-        const data = products.slice((page - 1) * perPage, page * perPage);
-
-        return {
-            data,
-            total,
-            page,
-            last_page: Math.ceil(total / perPage),
-        };
     }
 }

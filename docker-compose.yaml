@@ -14,14 +14,14 @@ services:
         restart: always
         environment:
             MYSQL_HOST: 127.0.0.1
-            MYSQL_DATABASE: bike-shop
+            MYSQL_DATABASE: myclothe
             MYSQL_USER: root
             MYSQL_PASSWORD: root
             MYSQL_ROOT_PASSWORD: root
         volumes:
             - .dbdata:/var/lib/mysql
         ports:
-            - 33066:3306
+            - 33063:3306
     redis:
         image: redis
         ports:
