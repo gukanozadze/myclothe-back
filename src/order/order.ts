@@ -2,10 +2,8 @@ import { Exclude, Expose } from 'class-transformer';
 import {
     Column,
     Entity,
-    JoinColumn,
-    ManyToOne,
-    OneToMany,
     PrimaryGeneratedColumn,
+    CreateDateColumn,
 } from 'typeorm';
 import { Product } from '../product/product';
 import { User } from '../user/user';
@@ -15,24 +13,15 @@ export class Order {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
-    user_id: string;
+    @Column({ default: 0 })
+    total_price: number;
 
-    @Column()
-    product_id: string;
-
-    @Exclude()
     @Column({ default: false })
-    complete: boolean;
+    completed: boolean;
 
-    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    time: string;
-
-    @ManyToOne(() => User, (user) => user.orders)
-    @JoinColumn({ name: 'user_id' })
-    user: User;
-
-    @ManyToOne(() => Product, (product) => product.orders)
-    @JoinColumn({ name: 'product_id' })
-    product: Product;
+    @CreateDateColumn({
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP(6)',
+    })
+    created_at: Date;
 }

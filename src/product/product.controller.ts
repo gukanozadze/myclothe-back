@@ -36,9 +36,14 @@ export class ProductController {
     async all(@Query() query: any) {
         console.log(query);
         return this.productService.find({
-            title: Like(`%${query.location || ''}%`),
-            color: Like(`%${query.color || ''}%`),
-            price: Between(query.min_rate || 0, query.max_rate || 100000000),
+            where: {
+                title: Like(`%${query.location || ''}%`),
+                price: Between(
+                    query.min_rate || 0,
+                    query.max_rate || 100000000,
+                ),
+            },
+            relations: ['user'],
         });
     }
 

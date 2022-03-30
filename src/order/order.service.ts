@@ -9,9 +9,7 @@ export class OrderService extends AbstractService {
     constructor(
         @InjectRepository(Order)
         private readonly orderRepository: Repository<Order>,
-    ) // @InjectStripe() private readonly stripeClient: Stripe
-
-    {
+    ) {
         super(orderRepository);
     }
 }

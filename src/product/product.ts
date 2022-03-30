@@ -5,6 +5,9 @@ import {
     OneToMany,
     ManyToOne,
     JoinColumn,
+    CreateDateColumn,
+    UpdateDateColumn,
+    OneToOne,
 } from 'typeorm';
 import { Order } from '../order/order';
 import { User } from '../user/user';
@@ -15,16 +18,27 @@ export class Product {
     id: number;
 
     @Column()
+    user_id: number;
+
+    // Created By
+    @ManyToOne(() => User, (user) => user.products)
+    @JoinColumn({ name: 'user_id' })
+    user: User;
+
+    @Column()
     title: string;
+
+    @Column()
+    description: string;
+
+    @Column()
+    stock: number;
 
     @Column({ default: 'https://i.imgur.com/Sg431sW.jpg' })
     image: string;
 
     @Column()
     price: number;
-
-    @Column()
-    color: string;
 
     @Column('decimal', { precision: 5, scale: 2, default: 0 })
     rating: number;
@@ -35,10 +49,16 @@ export class Product {
     @Column('simple-array', { nullable: true })
     ratings: number[];
 
-    @Column({ nullable: true })
-    user_id: number;
+    @CreateDateColumn({
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP(6)',
+    })
+    created_at: Date;
 
-    @ManyToOne(() => User, (user) => user.products)
-    @JoinColumn({ name: 'user_id' })
-    user: User;
+    @UpdateDateColumn({
+        type: 'timestamp',
+        default: () => 'CURRENT_TIMESTAMP(6)',
+        onUpdate: 'CURRENT_TIMESTAMP(6)',
+    })
+    updated_at: Date;
 }

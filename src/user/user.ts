@@ -28,9 +28,6 @@ export class User {
     @Column({ default: true })
     is_manager: boolean;
 
-    @OneToMany(() => Order, (order) => order.user)
-    orders: Order[];
-
     @OneToMany(() => Product, (product) => product.user)
     products: Product[];
 }

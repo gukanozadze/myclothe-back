@@ -1,6 +1,7 @@
 export class ProductCreateDto {
-    price?: string;
-    title?: string;
-    color?: string;
-    size?: string;
+    price: string;
+    description?: string;
+    title: string;
+    stock: number;
+    user_id: number;
 }
