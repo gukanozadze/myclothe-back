@@ -10,10 +10,18 @@ async function bootstrap() {
     app.setGlobalPrefix('api');
     app.useGlobalPipes(new ValidationPipe());
     app.use(cookieParser());
+
     app.enableCors({
-        origin: ['*'],
+        origin: [
+            'http://localhost:3000',
+            'http://localhost:4200',
+            'http://localhost:4300',
+            'http://localhost:5000',
+            'https://myclothe-back.herokuapp.com',
+        ],
         credentials: true,
     });
+
     await app.listen(configService.get('PORT') || 8000, function () {
         console.log(
             `Server started on port: ${configService.get('PORT') || 8000}`,
