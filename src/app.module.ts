@@ -18,7 +18,7 @@ import { UserModule } from './user/user.module';
             username: 'root',
             password: 'root',
             database: 'myclothe',
-            autoLoadEntities: true, // Do not use this in production
+            autoLoadEntities: process.env.NODE_ENV !== 'production',
             synchronize: true,
         }),
         EventEmitterModule.forRoot(),

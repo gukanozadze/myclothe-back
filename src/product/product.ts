@@ -25,6 +25,9 @@ export class Product {
     @JoinColumn({ name: 'user_id' })
     user: User;
 
+    @ManyToOne(() => Order, (order) => order.user)
+    orders: Order[];
+
     @Column()
     title: string;
 
