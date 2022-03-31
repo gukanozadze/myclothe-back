@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Order } from './order';
 import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
-import { SharedModule } from '../shared/shared.module';
 import { ProductModule } from '../product/product.module';
 import { OrderListener } from './listeners/order.listener';
 import { MailerModule } from '@nestjs-modules/mailer';
@@ -11,7 +10,6 @@ import { MailerModule } from '@nestjs-modules/mailer';
 @Module({
     imports: [
         TypeOrmModule.forFeature([Order]),
-        SharedModule,
         ProductModule,
         MailerModule.forRoot({
             transport: {
