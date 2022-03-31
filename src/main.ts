@@ -18,6 +18,8 @@ async function bootstrap() {
             'http://localhost:4300',
             'http://localhost:5000',
             'https://myclothe-back.herokuapp.com',
+            'https://myclothe-back.herokuapp.com/api',
+            'https://myclothe-back.herokuapp.com/',
         ],
         credentials: true,
     });
