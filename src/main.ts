@@ -12,6 +12,12 @@ async function bootstrap() {
         origin: ['*'],
         credentials: true,
     });
-    await app.listen(process.env.PORT || 8000);
+    await app.listen(process.env.PORT || 8000, function () {
+        console.log(
+            'Express server listening on port %d in %s mode',
+            this.address().port,
+            process.env,
+        );
+    });
 }
 bootstrap();
