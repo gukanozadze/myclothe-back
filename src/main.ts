@@ -16,8 +16,8 @@ async function bootstrap() {
             'http://localhost:3000',
             'http://localhost:5000',
             'https://main.d30c35e5jpaa9s.amplifyapp.com',
-            'http://myclothe.club',
-            'http://www.myclothe.club',
+            'https://myclothe.club',
+            'https://www.myclothe.club',
         ],
         credentials: true,
     });
