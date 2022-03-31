@@ -8,7 +8,6 @@ import {
     Inject,
     Param,
     Query,
-    Req,
     UseInterceptors,
 } from '@nestjs/common';
 import { Put } from '@nestjs/common';
@@ -16,7 +15,6 @@ import { UseGuards } from '@nestjs/common';
 import { Controller, Get, Post } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Cache } from 'cache-manager';
-import { Request } from 'express';
 import { Between, Like } from 'typeorm';
 import { AuthGuard } from '../user/auth.guard';
 import { ProductCreateDto } from './dtos/product-create.dto';
