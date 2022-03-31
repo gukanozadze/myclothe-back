@@ -25,7 +25,7 @@ export class ProductController {
         console.log(query);
         return this.productService.find({
             where: {
-                title: Like(`%${query.location || ''}%`),
+                title: Like(`%${query.title || ''}%`),
                 price: Between(
                     query.min_rate || 0,
                     query.max_rate || 100000000,

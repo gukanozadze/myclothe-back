@@ -37,7 +37,9 @@ export class Product {
     @Column()
     stock: number;
 
-    @Column({ default: 'https://i.imgur.com/Sg431sW.jpg' })
+    @Column({
+        default: 'https://cf.shopee.ph/file/de6128223b8d2b854a1567ed335f2204',
+    })
     image: string;
 
     @Column()
