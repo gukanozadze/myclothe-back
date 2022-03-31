@@ -2,12 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from '../app.module';
 
 import * as faker from 'minifaker';
-import * as bcrypt from 'bcryptjs';
 import 'minifaker/locales/en'; // the first locale import is set as default
 import { randomInt } from 'crypto';
 import { ProductService } from '../product/product.service';
 
-// Generating 30 random managers to User tables
+// Generating 30 random products
 (async () => {
     const app = await NestFactory.createApplicationContext(AppModule);
 
