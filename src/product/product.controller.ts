@@ -39,7 +39,12 @@ export class ProductController {
     @Post('products')
     async create(@Body() body: ProductCreateDto) {
         const product = await this.productService.save(body);
-        return product;
+        return this.productService.findOne({
+            where: {
+                id: product.id,
+            },
+            relations: ['user'],
+        });
     }
 
     @UseGuards(AuthGuard)
