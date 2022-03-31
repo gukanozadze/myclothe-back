@@ -20,4 +20,16 @@ export class OrderController {
         });
         return orders;
     }
+
+    @Post('orders-by-user')
+    async getAllOrdersByUser(@Body('user_id') user_id: string) {
+        const orders = await this.orderService.find({
+            relations: ['user', 'product'],
+            where: {
+                user_id,
+                completed: true,
+            },
+        });
+        return orders;
+    }
 }
