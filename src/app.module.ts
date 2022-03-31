@@ -12,11 +12,11 @@ import { UserModule } from './user/user.module';
     imports: [
         TypeOrmModule.forRoot({
             type: 'mysql',
-            host: process.env.DB_HOST,
-            port: Number(process.env.DB_PORT),
-            username: process.env.DB_USERNAME,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_DATABASE,
+            host: process.env.DB_HOST || 'db',
+            port: 3306,
+            username: process.env.DB_USERNAME || 'root',
+            password: process.env.DB_PASSWORD || 'root',
+            database: process.env.DB_DATABASE || 'myclothe',
             autoLoadEntities: process.env.NODE_ENV !== 'production',
             synchronize: true,
         }),

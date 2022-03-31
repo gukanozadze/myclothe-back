@@ -1,11 +1,8 @@
 import {
     Body,
-    CacheInterceptor,
     CacheKey,
     CacheTTL,
-    CACHE_MANAGER,
     Delete,
-    Inject,
     Param,
     Query,
     UseInterceptors,
@@ -13,21 +10,14 @@ import {
 import { Put } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common';
 import { Controller, Get, Post } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
-import { Cache } from 'cache-manager';
 import { Between, Like } from 'typeorm';
 import { AuthGuard } from '../user/auth.guard';
 import { ProductCreateDto } from './dtos/product-create.dto';
-import { Product } from './product';
 import { ProductService } from './product.service';
 
 @Controller('')
 export class ProductController {
-    constructor(
-        @Inject(CACHE_MANAGER) private cacheManager: Cache,
-        private readonly productService: ProductService,
-        private eventEmitter: EventEmitter2,
-    ) {}
+    constructor(private readonly productService: ProductService) {}
 
     @UseGuards(AuthGuard)
     @Get('products')
@@ -49,7 +39,6 @@ export class ProductController {
     @Post('products')
     async create(@Body() body: ProductCreateDto) {
         const product = await this.productService.save(body);
-        this.eventEmitter.emit('product_updated');
         return product;
     }
 
@@ -66,7 +55,6 @@ export class ProductController {
     @Put('products/:id')
     async update(@Param('id') id: number, @Body() body: ProductCreateDto) {
         await this.productService.update(id, body);
-        this.eventEmitter.emit('product_updated');
         return this.productService.findOne({ id });
     }
 
@@ -74,17 +62,6 @@ export class ProductController {
     @Delete('products/:id')
     async delete(@Param('id') id: number) {
         const response = await this.productService.delete(id);
-        this.eventEmitter.emit('product_updated');
-
         return response;
-    }
-
-    // One way to save cache
-    @CacheKey('products_frontend')
-    @CacheTTL(30 * 60) // 30 minutes
-    @UseInterceptors(CacheInterceptor)
-    @Get('manager/products/frontend')
-    async frontend() {
-        return this.productService.find();
     }
 }
